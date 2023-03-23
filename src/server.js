@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto"
 import http from "node:http"
 import { json } from "./middlewares/json.js"
 
@@ -10,8 +11,6 @@ const server = http.createServer(async(req,res)=>{
 
     await json(req,res)
 
-    console.log(method,url)
-
     if(method === 'GET' && url === '/tasks'){
         return res
         .setHeader('Content-Type','application/json')
@@ -20,8 +19,20 @@ const server = http.createServer(async(req,res)=>{
 
     if(method === 'POST' && url === '/tasks'){
         const {body} = req
-        tasks.push(body)
-        // return res.writeHead(204)
+
+        const date = new Date()
+
+        const formatedDate = date.toISOString().split('T')[0] //2023-03-23
+
+        const completTasksInfos = {
+            "id": randomUUID(),
+            ...body,
+            "created_at": formatedDate,
+            "completed_at": null,
+            "updated_at": null
+        }
+        tasks.push(completTasksInfos)
+        res.writeHead(201)
     }
     
     
