@@ -1,0 +1,21 @@
+{
+  "name": "desafio-01",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vinicius-SO/Node-IgniteChallenge-01.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vinicius-SO/Node-IgniteChallenge-01/issues"
+  },
+  "homepage": "https://github.com/Vinicius-SO/Node-IgniteChallenge-01#readme"
+}
