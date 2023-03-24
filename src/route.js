@@ -38,18 +38,42 @@ export const routes = [
         }
     },
     {
+        method:'DELETE',
+        path: buildRoutePath('/tasks/:id'),
+        handler:(req, res)=>{
+            const { id } = req.params
+
+            tasks.filter((task)=>{
+                return task.id === id
+            })
+            
+
+
+            return res.writeHead(204).end()
+        }
+    },
+    {
         method:'PUT',
         path: buildRoutePath('/tasks/:id'),
         handler:(req, res)=>{
             const { id } = req.params
 
-            const task = tasks.filter((task)=>{
+            const { title, description} = req.body
+
+            const date = new Date()
+    
+            const formatedDate = date.toISOString().split('T')[0] //2023-03-23
+
+            const task = tasks.find((task)=>{
                 return task.id === id
             })
-            
-            console.log(task[0])
 
-            return res.end('')
+            task.description = description
+            task.title = title
+
+            task.updated_at = formatedDate
+
+            return res.writeHead(204).end()
         }
     },
 ]
