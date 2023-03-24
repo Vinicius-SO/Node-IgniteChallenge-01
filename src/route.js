@@ -76,4 +76,24 @@ export const routes = [
             return res.writeHead(204).end()
         }
     },
+    {
+        method:'PATCH',
+        path: buildRoutePath('/tasks/:id/complete'),
+        handler:(req, res)=>{
+            const { id } = req.params
+
+            const date = new Date()
+    
+            const formatedDate = date.toISOString().split('T')[0] //2023-03-23
+
+            const task = tasks.find((task)=>{
+                return task.id === id
+            })
+
+            task.completed_at = formatedDate
+            
+
+            return res.writeHead(204).end()
+        }
+    }
 ]
