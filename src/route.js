@@ -1,5 +1,6 @@
 // import { buildRoutePath } from "./build-route-path";
 import { randomUUID } from "node:crypto"
+import { buildRoutePath } from "./utils/build-route-path.js"
 
 
 const tasks = []
@@ -8,7 +9,7 @@ const tasks = []
 export const routes = [
     {
         method:'GET',
-        path: '/tasks',
+        path: buildRoutePath('/tasks'),
         handler:(req, res)=>{
             return res
                 .setHeader('Content-Type','application/json')
@@ -17,7 +18,7 @@ export const routes = [
     },
     {
         method:'POST',
-        path: '/tasks',
+        path: buildRoutePath('/tasks'),
         handler:(req, res)=>{
             const {body} = req
 
@@ -34,6 +35,21 @@ export const routes = [
             }
             tasks.push(completTasksInfos)
             return res.writeHead(201).end()
+        }
+    },
+    {
+        method:'PUT',
+        path: buildRoutePath('/tasks/:id'),
+        handler:(req, res)=>{
+            const { id } = req.params
+
+            const task = tasks.filter((task)=>{
+                return task.id === id
+            })
+            
+            console.log(task[0])
+
+            return res.end('')
         }
     },
 ]
