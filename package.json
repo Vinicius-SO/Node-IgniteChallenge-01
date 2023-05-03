@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/Vinicius-SO/Node-IgniteChallenge-01/issues"
   },
-  "homepage": "https://github.com/Vinicius-SO/Node-IgniteChallenge-01#readme"
+  "homepage": "https://github.com/Vinicius-SO/Node-IgniteChallenge-01#readme",
+  "dependencies": {
+    "csv-generate": "^4.2.2",
+    "csv-parse": "^5.3.6"
+  }
 }
