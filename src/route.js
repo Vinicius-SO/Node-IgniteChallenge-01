@@ -2,15 +2,19 @@
 import { randomUUID } from "node:crypto"
 import { buildRoutePath } from "./utils/build-route-path.js"
 
+import { Database } from './database.js'
 
-const tasks = []
 
+const database = new Database ()
 
 export const routes = [
     {
         method:'GET',
         path: buildRoutePath('/tasks'),
         handler:(req, res)=>{
+
+            const tasks = database.select()
+
             return res
                 .setHeader('Content-Type','application/json')
                 .end(JSON.stringify(tasks))
@@ -33,7 +37,8 @@ export const routes = [
                 "completed_at": null,
                 "updated_at": null
             }
-            tasks.push(completTasksInfos)
+            database.insert('tasks',completTasksInfos)
+
             return res.writeHead(201).end()
         }
     },
@@ -52,48 +57,48 @@ export const routes = [
             return res.writeHead(204).end()
         }
     },
-    {
-        method:'PUT',
-        path: buildRoutePath('/tasks/:id'),
-        handler:(req, res)=>{
-            const { id } = req.params
+    // {
+    //     method:'PUT',
+    //     path: buildRoutePath('/tasks/:id'),
+    //     handler:(req, res)=>{
+    //         const { id } = req.params
 
-            const { title, description} = req.body
+    //         const { title, description} = req.body
 
-            const date = new Date()
+    //         const date = new Date()
     
-            const formatedDate = date.toISOString().split('T')[0] //2023-03-23
+    //         const formatedDate = date.toISOString().split('T')[0] //2023-03-23
 
-            const task = tasks.find((task)=>{
-                return task.id === id
-            })
+    //         const task = tasks.find((task)=>{
+    //             return task.id === id
+    //         })
 
-            task.description = description
-            task.title = title
+    //         task.description = description
+    //         task.title = title
 
-            task.updated_at = formatedDate
+    //         task.updated_at = formatedDate
 
-            return res.writeHead(204).end()
-        }
-    },
-    {
-        method:'PATCH',
-        path: buildRoutePath('/tasks/:id/complete'),
-        handler:(req, res)=>{
-            const { id } = req.params
+    //         return res.writeHead(204).end()
+    //     }
+    // },
+    // {
+    //     method:'PATCH',
+    //     path: buildRoutePath('/tasks/:id/complete'),
+    //     handler:(req, res)=>{
+    //         const { id } = req.params
 
-            const date = new Date()
+    //         const date = new Date()
     
-            const formatedDate = date.toISOString().split('T')[0] //2023-03-23
+    //         const formatedDate = date.toISOString().split('T')[0] //2023-03-23
 
-            const task = tasks.find((task)=>{
-                return task.id === id
-            })
+    //         const task = tasks.find((task)=>{
+    //             return task.id === id
+    //         })
 
-            task.completed_at = formatedDate
+    //         task.completed_at = formatedDate
             
 
-            return res.writeHead(204).end()
-        }
-    }
+    //         return res.writeHead(204).end()
+    //     }
+    // }
 ]
