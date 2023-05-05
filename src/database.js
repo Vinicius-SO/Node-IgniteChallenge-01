@@ -12,11 +12,11 @@ export class Database {
     .catch(()=>{
         this.#persist()
     })
-}
+  }
 
   #persist(){
     fs.writeFile(databasePath, JSON.stringify(this.#database))
-}
+  }
 
   select(table){
     const data = this.#database[table] ?? []
@@ -33,6 +33,20 @@ export class Database {
 
     this.#persist()
     return data;
+  }
+
+  delete(table, id){
+    const tasks = this.#database[table]
+
+    const atualizatedTasks = tasks.filter((data)=>{
+      return data.id != id
+    })
+
+    // console.log(atualizatedTasks)
+
+    this.#database[table] = [...atualizatedTasks]
+
+    this.#persist()
   }
 
 }

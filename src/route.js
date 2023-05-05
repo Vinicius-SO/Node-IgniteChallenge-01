@@ -13,7 +13,7 @@ export const routes = [
         path: buildRoutePath('/tasks'),
         handler:(req, res)=>{
 
-            const tasks = database.select()
+            const tasks = database.select('tasks')
 
             return res
                 .setHeader('Content-Type','application/json')
@@ -48,11 +48,7 @@ export const routes = [
         handler:(req, res)=>{
             const { id } = req.params
 
-            tasks.filter((task)=>{
-                return task.id === id
-            })
-            
-
+            database.delete('tasks', id)
 
             return res.writeHead(204).end()
         }
