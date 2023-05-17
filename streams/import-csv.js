@@ -11,31 +11,24 @@ const csvParse = parse({
   fromLine: 2 // skip the header line
 });
 
-async function run() {
-  const linesParse = stream.pipe(csvParse);
 
-  for await (const line of linesParse) {
-    const [title, description] = line;
+export async function getCsvInfos(){
+  const lines = stream.pipe(csvParse)
 
-    await fetch('http://localhost:3333/tasks', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title,
-        description,
-      })
+for await (const line of lines){
+  const [title, description] = line
+
+  //https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+  
+  fetch('http://localhost:3333/tasks',{
+    method:'POST',
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify({
+      title,
+      description
     })
-
-    // Uncomment this line to see the import working in slow motion (open the db.json)
-    // await wait(1000)
-  }
-
+  })
 }
-
-run()
-
-function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
 }

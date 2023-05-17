@@ -3,9 +3,11 @@ import { randomUUID } from "node:crypto"
 import { buildRoutePath } from "./utils/build-route-path.js"
 
 import { Database } from './database.js'
+import { getCsvInfos } from "../streams/import-csv.js"
 
 
 const database = new Database ()
+getCsvInfos()
 
 export const routes = [
     {
