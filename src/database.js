@@ -18,8 +18,15 @@ export class Database {
     fs.writeFile(databasePath, JSON.stringify(this.#database))
   }
 
-  select(table){
-    const data = this.#database[table] ?? []
+  select(table, id){
+    let data = this.#database[table] ?? []
+
+    if(id){
+      data = data.filter((task)=>{
+        return task.id == id
+      })
+    }
+
 
     return data 
   }
@@ -47,6 +54,30 @@ export class Database {
     this.#database[table] = [...atualizatedTasks]
 
     this.#persist()
+  }
+
+
+  update(table, id, data) {
+    const index = this.#database[table].findIndex(row => row.id === id)
+
+
+    if(index>= -1){
+      const row = this.#database[table][index]
+
+      this.#database[table][index] = {id, ...row, ...data}
+
+      
+      if(!data.completed_at ){
+        const date = new Date() 
+
+        const formatedDate = date.toISOString().split('T')[0] //2023-03-23
+
+        const updated_at = formatedDate
+        this.#database[table][index].updated_at = updated_at
+      }
+
+      this.#persist()
+    }
   }
 
 }

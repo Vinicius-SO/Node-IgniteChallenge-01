@@ -53,48 +53,58 @@ export const routes = [
             return res.writeHead(204).end()
         }
     },
-    // {
-    //     method:'PUT',
-    //     path: buildRoutePath('/tasks/:id'),
-    //     handler:(req, res)=>{
-    //         const { id } = req.params
+    {
+        method:'PUT',
+        path: buildRoutePath('/tasks/:id'),
+        handler:(req, res)=>{
+            const { id } = req.params
 
-    //         const { title, description} = req.body
+            const { title, description} = req.body
 
-    //         const date = new Date()
-    
-    //         const formatedDate = date.toISOString().split('T')[0] //2023-03-23
+            const date = new Date()
 
-    //         const task = tasks.find((task)=>{
-    //             return task.id === id
-    //         })
+            const formatedDate = date.toISOString().split('T')[0] //2023-03-23
 
-    //         task.description = description
-    //         task.title = title
+            const data = {
+                title,
+                description,
+                date: formatedDate
+            }
 
-    //         task.updated_at = formatedDate
+            const [tasks] = database.select('tasks', id)
 
-    //         return res.writeHead(204).end()
-    //     }
-    // },
-    // {
-    //     method:'PATCH',
-    //     path: buildRoutePath('/tasks/:id/complete'),
-    //     handler:(req, res)=>{
-    //         const { id } = req.params
+            if(!tasks){
+                return res.writeHead(404).end()
+            }
 
-    //         const date = new Date()
-    
-    //         const formatedDate = date.toISOString().split('T')[0] //2023-03-23
+            database.update('tasks', id, data )
 
-    //         const task = tasks.find((task)=>{
-    //             return task.id === id
-    //         })
 
-    //         task.completed_at = formatedDate
-            
+            return res.writeHead(204).end()
+        }
+    },
+    {
+        method:'PATCH',
+        path: buildRoutePath('/tasks/:id/complete'),
+        handler:(req, res)=>{
+            const { id } = req.params
 
-    //         return res.writeHead(204).end()
-    //     }
-    // }
+           const taskExist = database.select('tasks', id)
+   
+           if(!taskExist){
+            return res.writeHead(404).end
+           }
+
+           const date = new Date() 
+
+           const formatedDate = date.toISOString().split('T')[0] //2023-03-23
+
+           const isTaskCompleted = !! taskExist.completed_at
+           const completed_at = isTaskCompleted ? null : formatedDate
+
+           database.update('tasks', id, { completed_at })
+
+            return res.writeHead(204).end()
+        }
+    }
 ]
